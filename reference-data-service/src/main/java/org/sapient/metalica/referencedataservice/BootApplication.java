@@ -1,25 +1,35 @@
 package org.sapient.metalica.referencedataservice;
 
+import jdk.internal.org.objectweb.asm.TypeReference;
+import org.sapient.metalica.referencedataservice.config.AmqpConfig;
 import org.sapient.metalica.referencedataservice.model.Commodity;
 import org.sapient.metalica.referencedataservice.model.CounterParty;
 import org.sapient.metalica.referencedataservice.model.Location;
 import org.sapient.metalica.referencedataservice.repository.CommodityRepository;
 import org.sapient.metalica.referencedataservice.repository.CounterPartyRepository;
 import org.sapient.metalica.referencedataservice.repository.LocationRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.annotation.Resource;
 
+import static org.sapient.metalica.referencedataservice.constant.Constants.COMMODITY_DATA_QUEUE;
+import static org.sapient.metalica.referencedataservice.constant.Constants.REF_DATA_EXCHANGE;
+
 @SpringBootApplication
+@Import(AmqpConfig.class)
 @EnableMongoRepositories
 public class BootApplication implements CommandLineRunner {
 
     @Resource CommodityRepository commodityRepository;
     @Resource CounterPartyRepository counterPartyRepository;
     @Resource LocationRepository locationRepository;
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(BootApplication.class, args);
@@ -50,6 +60,9 @@ public class BootApplication implements CommandLineRunner {
         locationRepository.save(new Location("TOK", "Tokyo"));
         locationRepository.save(new Location("DUB", "Dubai"));
         locationRepository.save(new Location("HON", "Hong Kong"));
+
+
+        rabbitTemplate.convertAndSend(REF_DATA_EXCHANGE, COMMODITY_DATA_QUEUE, "AL");
     }
 
 }

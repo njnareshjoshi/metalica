@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.sapient.metalica.referencedataservice.constant.Constants.*;
+import static org.sapient.metalica.referencedataservice.constant.Constants.COMMODITY_DATA_QUEUE;
 
 public class CommodityListener {
 

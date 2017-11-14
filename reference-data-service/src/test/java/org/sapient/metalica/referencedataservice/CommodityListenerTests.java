@@ -3,6 +3,7 @@ package org.sapient.metalica.referencedataservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sapient.metalica.referencedataservice.listener.CommodityListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -11,8 +12,8 @@ import javax.annotation.Resource;
 
 import static org.sapient.metalica.referencedataservice.constant.Constants.COMMODITY_DATA_QUEUE;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class CommodityListenerTests {
 
     @Resource
